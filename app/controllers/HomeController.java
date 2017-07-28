@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.PersonModel;
 import play.mvc.*;
 import scala.util.parsing.json.JSONObject;
 import views.html.home.welcome;
@@ -19,7 +20,7 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
-        return ok("hellow play framework");
+        return ok("hello play framework");
     }
 
     public Result welcome(String name, int age) {
@@ -28,6 +29,11 @@ public class HomeController extends Controller {
 
     public Result testJsonPost() {
         JsonNode obj = request().body().asJson();
+        PersonModel model = new PersonModel();
+        model.setName(obj.get("name").asText("no-name"));
+        model.setAge(obj.get("age").asInt(-1));
+        model.setAddress(obj.get("address").asText("no-address"));
+        DBController.getInstance().getDatastore().save(model);
         return ok(obj.toString());
     }
 
