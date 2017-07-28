@@ -1,0 +1,15 @@
+@(name: String)
+
+<html>
+    <head>Person table details</head>
+    <body>
+        <p>Welcome to @name</p>
+
+        <form action="@routes.PersonController.createPerson()" method="post" Content-Type="application/json">
+            Name: <input type="text" name="name" id="name"><br><br>
+            Age: <input type="number" name="age" id="age"><br><br>
+            Address: <input type="text" name="address" id="address"><br><br>
+            <input type="submit" value="add person"><br><br>
+        </form>
+    </body>
+</html>
