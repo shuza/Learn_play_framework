@@ -1,20 +1,26 @@
 package models;
 
+import com.avaje.ebean.Model;
+import com.eclipsesource.json.JsonObject;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
 
-@Entity("PersonTable")
-public class PersonModel {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "person")
+public class PersonModel extends Model {
 
     @Id
-    private ObjectId objectId;
     public String name;
     public int age;
     public String address;
 
     public PersonModel() {
+        name = "no-name";
+        age = -1;
+        address = "no-address";
     }
 
     public PersonModel(String name, int age, String address) {
@@ -45,5 +51,18 @@ public class PersonModel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public JsonObject toJson() {
+        JsonObject obj = new JsonObject();
+        obj.add("name", name);
+        obj.add("age", age);
+        obj.add("address", address);
+        return obj;
+    }
+
+    @Override
+    public String toString() {
+        return toJson().toString();
     }
 }

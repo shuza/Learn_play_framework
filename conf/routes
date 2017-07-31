@@ -11,6 +11,8 @@ GET         /message                   controllers.AsyncController.message
 
 GET         /testPerson                controllers.PersonController.index()
 POST        /testPerson/create         controllers.PersonController.createPerson()
+GET         /testPerson/all            controllers.PersonController.getPersonList()
+POST        /testPerson/update         controllers.PersonController.updatePerson()
 
 #Welcome page
 POST        /testJson                  controllers.HomeController.testJsonPost()

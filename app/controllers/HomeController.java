@@ -33,7 +33,7 @@ public class HomeController extends Controller {
         model.setName(obj.get("name").asText("no-name"));
         model.setAge(obj.get("age").asInt(-1));
         model.setAddress(obj.get("address").asText("no-address"));
-        DBController.getInstance().getDatastore().save(model);
+
         return ok(obj.toString());
     }
 

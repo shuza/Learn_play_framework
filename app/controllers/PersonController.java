@@ -1,12 +1,14 @@
 package controllers;
 
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.fasterxml.jackson.databind.JsonNode;
+import daos.PersonaDao;
 import models.PersonModel;
-import org.mongodb.morphia.query.Query;
 import play.mvc.*;
 import views.html.person.perconCreate;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PersonController extends Controller {
 
@@ -21,16 +23,35 @@ public class PersonController extends Controller {
         model.setAge(obj.get("age").asInt(-1));
         model.setAddress(obj.get("address").asText("no-address"));
 
-        DBController.getInstance().getDatastore().save(model);
+        String message = "person create fail";
+        if (PersonaDao.getInstance().createPerson(model)) {
+            message = "person create successfully";
+        }
 
-
-        return ok("person created");
+        return ok(message);
     }
 
-    public List<PersonModel> getPersonList() {
-        Query<PersonModel> query = DBController.getInstance().getDatastore().createQuery(PersonModel.class);
-        List<PersonModel> personModels = query.asList();
-        return personModels;
+    public Result getPersonList() {
+        ArrayList<PersonModel> persons = new ArrayList<>(PersonaDao.getInstance().getPersons());
+        JsonArray results = new JsonArray();
+        for (int i = 0; i < persons.size(); i++) {
+            results.add(persons.get(i).toJson());
+        }
+        return ok(results.toString());
+    }
+
+    public Result updatePerson() {
+        JsonNode obj = request().body().asJson();
+        PersonModel model = new PersonModel();
+        model.setName(obj.get("name").asText("no"));
+        model.setAge(obj.get("age").asInt(0));
+        model.setAddress(obj.get("address").asText("no-add"));
+        String message = "update failed";
+        if (PersonaDao.getInstance().updatePreson(model)) {
+            message = "update success";
+        }
+
+        return ok(message);
     }
 
 }
