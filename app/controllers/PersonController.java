@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class PersonController extends Controller {
 
-    public Result index() {
-        return ok(perconCreate.render("shuza"));
+    public Result index(int id, String name) {
+        return ok(perconCreate.render("shuza id: " + id + "\t name: " + name));
     }
 
     public Result createPerson() {
